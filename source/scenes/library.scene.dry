@@ -1,0 +1,488 @@
+title: library
+new-page: true
+is-special: true
+go-to: menu
+
+= The Library
+
+Herein contains relevant information about the government and politics of the German republic.
+
+@menu
+
+- @government: Spains system of government
+- @weimar_timeline: Timeline of Spain before 1931
+- @curr_gov: Current government details
+- @demographics: Demographics
+- @parties: Parties
+- @public_opinion: Public opinion (and projected election results)
+- @paramilitaries: Paramilitary groups
+- @factions: Internal factions
+- @figures: Figures and charts
+- @backSpecialScene: Exit library.
+
+@government
+go-to: menu
+
+Spain currently is a constitutional monarchy. The lower house of parliament is composed of representatives elected by single-member constituencies leading to a few larger parties. The upper house included both elected members and senators appointed by the king and was designed to represent the aristocracy and the church. This means that Spains democracy is dominated by oligarchic and aristocratic intrests. Currently there is universal male sufferage, so women aren't allowed to vote.
+
+Currently there is a electoral law in the works that will abolish the upper house and reform the single-member constituencies into larger multi-member constituencies. These new constituencies give bonus seats to the electoral list that achieves a majority or a plurality of the vote. Meaning that large multi-party coalitions are favored by this system.
+
+However after the resignation of Primo de Rivera the republican forces are hoping to reform the kingdom into a truly democratic republic. If they win the upcoming election they will draft a new constitution to adopt universal female sufferage, secularize the country, give regional autonomy, abolish the monarchy and more.
+
+Spain is divided into regions, each with its own local governments and varying degrees of autonomy. Most of these regions, like Catalonia and the Basque Country, have cultural and linguistic difference with the rest of Spain leading to strong regionalist sentiment. 
+
+@weimar_timeline
+go-to: menu
+
+= Timeline of the PSOE and Spain (until 1930)
+
+**1873-1874**: The First Spanish Republic is proclaimed following the abdication of King Amadeo I. The republic is short-lived, marked by political instability and rebellions. It ends with the restoration of the Bourbon monarchy under King Alfonso XII.
+
+**1876**: The Spanish Constitution of 1876 is enacted, establishing a constitutional monarchy. 
+
+**1879**: The PSOE is founded in Madrid by Pablo Iglesias, advocating for workers' rights and socialism.
+
+**1898**: Spain loses its remaining overseas colonies in the Spanish-American War. This defeat leads to Spanish decline on the world stage and domestically.
+
+**1902**: King Alfonso XIII ascends the throne.
+
+**1910**: The PSOE gains its first parliamentary seat.
+
+**1917**: A general strike supported by the PSOE, Unions and anarchists paralyzes the country. The strike is crushed by the military.
+
+**1921**: The Disaster of Annual occurs in Spanish Morocco, where Spanish forces suffer a catastrophic defeat at the hands of Rif rebels. The loss leads to widespread criticism of the military and the monarchy, further destabilizing the government.
+
+**1923**: General Miguel Primo de Rivera stages a coup with the support of King Alfonso XIII, establishing a military dictatorship.
+
+**1929**: Economic decline leads to growing opposition against the dictatorial rule of Primo de Rivera. 
+
+**1930**: Primo de Rivera resigns, and the monarchy attempts to restore constitutional rule. The PSOE joins republican and regionalist forces in calling for the end of the monarchy.
+
+@curr_gov
+go-to: cabinet if PSOE_in_government; menu if not PSOE_in_government
+
+= Current Government
+
+President: [+ president +]
+
+Chancellor: [+ chancellor +] ([+ chancellor_party +])
+
+Reichstag composition:
+
+# 1928: 30, 1930: 25, 1932: 22
+PSOE: [+ PSOE_r +]%
+[? if sapd_formed and sapd_r > 0: SAPD: [+ sapd_r +]% ?]
+# 1928: 15, 1930: 15, 1932: 
+AR: [+ z_r +]%
+# 1928: 10, 1930: 13
+PCE: [+ PCE_r +]%
+# 1928: 5, 1930: 4 (as UR)
+[+ PRRS_name +]: [+ PRRS_r +]%
+# 1928: 9, 1930: 5
+PRR: [+ dvp_r +]%
+# 1928: 14, 1930: 7
+CEDA: [+ dnvp_r +]%
+# 1928: 3, 1930: 18
+RE: [+ nsdap_r +]%
+# 1928: 9, 1930: 10
+Others: [+ other_r +]%
+
+PSOE position: [? if PSOE_toleration : toleration ?][? if PSOE_in_government : in government - ?][? if PSOE_toleration == 0 and PSOE_in_government == 0 and PSOE_caretaker == 0 : opposition ?][? if PSOE_caretaker : caretaker government ?]
+[? if in_weimar_coalition and PSOE_in_government: Weimar Coalition ?][? if in_grand_coalition and PSOE_in_government: Grand Coalition ?][? if in_popular_front and PSOE_in_government: Popular Front ?][? if in_left_front and PSOE_in_government: Left Front ?][? if in_PSOE_majority and PSOE_in_government: PSOE majority ?][? if in_minority_government and PSOE_in_government: minority government ?][? if in_emergency_government and PSOE_in_government: emergency government ?]
+
+[? if PSOE_in_government and not in_PSOE_majority and not in_left_front : Coalition dissent: [+ coalition_dissent : coalition_dissent +] ?]
+
+[? if PSOE_in_government and (in_left_front or in_popular_front): PCE coalition dissent: [+ PCE_coalition_dissent : coalition_dissent +] ?]
+
+@cabinet
+go-to: menu
+
+Current cabinet:
+
+Labor: [+ labor_minister_party +]
+
+Interior: [+ interior_minister_party +]
+
+Finance: [+ finance_minister_party +]
+
+Economic: [+ economic_minister_party +]
+
+Justice: [+ justice_minister_party +]
+
+Foreign: [+ foreign_minister_party +]
+
+Ejército de la República Española: [+ reichswehr_minister_party +]
+
+Agriculture: [+ agriculture_minister_party +]
+
+
+@demographics
+go-to: menu
+
+**Demographic Groups**
+
+**Working Class**: The urban working class - blue-collar workers in factories, workshops, mines, and the like. Most are socialist, supporting either the PSOE, PCE or regionalist left parties. They make up 40-50% of the population.
+
+**Old Middle Class**: The old middle class consists of independent artisans, shopkeepers, and small-time businesspeople. They tend to favour the republic but are warry of the socialist parties and are the strongest base for the PRR. 5-10% of the population.
+
+**New Middle Class**: The new middle class consists of white-collar workers and government employees. This is the base of left-liberalism. around 10% of the population.
+
+**Rural**: Small and large farmers and independent rural workers. Farmers often support the CEDA, but landless rural workers support the PSOE and the left more often. 40-50% of the population.
+
+**Devout Catholics** Although 98% of spain is nominal Catholic only about 40% of the population are devout Catholics. They disproportionately support CEDA and to a smaller extend the PRR.
+
+
+
+@public_opinion
+on-arrival: {!
+Q.pro_republic_disp = Math.round(Q.pro_republic);
+Q.nationalism_disp = Math.round(Q.nationalism);
+Q.socialism_disp = Math.round(Q.socialism);
+!}
+view-if: (not historical_mode) or game_over
+go-to: election_algorithm
+set-jump: election_projections
+
+**Public Opinion**
+
+#Support for Socialism: [+ socialism +]%
+
+#Support for Nationalism: [+ nationalism +]%
+
+Support for the Republic: [+ pro_republic_disp +]%
+
+
+@election_projections
+view-if: (not historical_mode) or game_over
+go-to: menu
+
+**Projected election results** (if the election were to be held now):
+
+# 1928: 30, 1930: 25, 1932: 22
+PSOE: [+ PSOE_votes +]%
+
+[? if sapd_formed: SAPD: [+ sapd_votes +]% ?]
+
+# 1928: 15, 1930: 15, 1932: 
+AR: [+ z_votes +]%
+
+# 1928: 10, 1930: 13
+PCE: [+ PCE_votes +]%
+
+# 1928: 5, 1930: 4 (as UR)
+[+ PRRS_name +]: [+ PRRS_votes +]%
+
+# 1928: 9, 1930: 5
+PRR: [+ dvp_votes +]%
+
+# 1928: 14, 1930: 7
+CEDA: [+ dnvp_votes +]%
+
+# 1928: 3, 1930: 18
+RE: [+ nsdap_votes +]%
+
+# 1928: 9, 1930: 10
+Others: [+ other_votes +]%
+
+**Detailed results for each demographic**
+
+Workers: PSOE: [+ workers_PSOE_display +]%, AR: [+ workers_z_display +]%, PCE: [+ workers_PCE_display +]%, [+ PRRS_name +]: [+ workers_PRRS_display +]%, PRR: [+ workers_dvp_display +]%; CEDA: [+ workers_dnvp_display +]%, RE: [+ workers_nsdap_display +]%, Others: [+ workers_other_display +]% [? if sapd_formed: SAPD: [+ workers_sapd_display +]% ?]
+
+New Middle Class: PSOE: [+ new_middle_PSOE_display +]%, AR: [+ new_middle_z_display +]%, PCE: [+ new_middle_PCE_display +]%, [+ PRRS_name +]: [+ new_middle_PRRS_display +]%, PRR: [+ new_middle_dvp_display +]%; CEDA: [+ new_middle_dnvp_display +]%, RE: [+ new_middle_nsdap_display +]%, Others: [+ new_middle_other_display +]% [? if sapd_formed: SAPD: [+ new_middle_sapd_display +]% ?]
+
+Old Middle Class: PSOE: [+ old_middle_PSOE_display +]%, AR: [+ old_middle_z_display +]%, PCE: [+ old_middle_PCE_display +]%, [+ PRRS_name +]: [+ old_middle_PRRS_display +]%, PRR: [+ old_middle_dvp_display +]%; CEDA: [+ old_middle_dnvp_display +]%, RE: [+ old_middle_nsdap_display +]%, Others: [+ old_middle_other_display +]% [? if sapd_formed: SAPD: [+ old_middle_sapd_display +]% ?]
+
+Rural: PSOE: [+ rural_PSOE_display +]%, AR: [+ rural_z_display +]%, PCE: [+ rural_PCE_display +]%, [+ PRRS_name +]: [+ rural_PRRS_display +]%, PRR: [+ rural_dvp_display +]%; CEDA: [+ rural_dnvp_display +]%, RE: [+ rural_nsdap_display +]%, Others: [+ rural_other_display +]% [? if sapd_formed: SAPD: [+ rural_sapd_display +]% ?]
+
+Unemployed: PSOE: [+ unemployed_PSOE_display +]%, AR: [+ unemployed_z_display +]%, PCE: [+ unemployed_PCE_display +]%, [+ PRRS_name +]: [+ unemployed_PRRS_display +]%, PRR: [+ unemployed_dvp_display +]%; CEDA: [+ unemployed_dnvp_display +]%, RE: [+ unemployed_nsdap_display +]%, Others: [+ unemployed_other_display +]% [? if sapd_formed: SAPD: [+ unemployed_sapd_display +]% ?]
+
+Catholics: PSOE: [+ catholics_PSOE_display +]%, AR: [+ catholics_z_display +]%, PCE: [+ catholics_PCE_display +]%, [+ PRRS_name +]: [+ catholics_PRRS_display +]%, PRR: [+ catholics_dvp_display +]%; CEDA: [+ catholics_dnvp_display +]%, RE: [+ catholics_nsdap_display +]%, Others: [+ catholics_other_display +]% [? if sapd_formed: SAPD: [+ catholics_sapd_display +]% ?]
+
+@parties
+go-to: menu
+
+**PSOE** - *Partido Socialista Obrero Español* (Spanish Socialist Workers' Party) - this is us. We are a socialist and democratic party of the working class. We are the heirs of the legacy of Marx and Engels, and our founder Pablo Iglesias. We are the foremost fighters of the working class. 
+
+**AR** - *Acción Republicana* (Republican Action) - a centre-left liberal party, popular among the intelligensia and educated middle class, they are supportive of moderate social reform, secularization, decentralization and a republic.
+
+Current relations: [+ z_relation : relationships +]
+
+# TODO: replace this with the german state party after 1930
+**PRRS** - *Partido Republicano Radical Socialista* (Radical Socialist Republican Party) - a left wing liberal party, supported by the progressive middle class and moderate working class people. Although not socialist they support radical reform. 
+
+Current relations: [+ PRRS_relation : relationships +]
+
+**PRR** - *Partido Republicano Radical* (Radical Republican Party) - a centre-right and moderate liberal party, supported by the middle classes and bourgeoisie. They support a republic, but don't support most economic reforms.
+
+Current relations: [+ dvp_relation : relationships +]
+
+**CEDA** - *Confederación Española de Derechas Autónomas* (Spanish Confederation of Autonomous Rights) - a right-wing nationalist-conservative party, with authoritarian, corparatist, and deeply religious elements. It is supported by the former aristocracy, rural landowners, and conservative Catholics.
+
+Current relations: [+ dnvp_relation : relationships +]
+
+**PCE** - *Partido Comunista de España* (Communist Party of Spain) - a radical left-wing offshoot of the PSOE that emerged after the PSOE refused to join the Comintern of the Soviet Union. They follow the path of Moscow and are in favor of a Soviet-style revolution.
+
+Current relations: [+ PCE_relation : relationships +]
+
+[? if sapd_formed: SAPD - Sozialistische Arbeiterpartei Deutschlands (Socialist Worker's Party of Germany) - a party recently formed in a split from the PSOE, the SAPD is essentially an agglomeration of various left-wing splinter groups between the PSOE and PCE. ?]
+
+**RE** - *Renovación Española* - (Spanish Renovation) - a far-right nationalist, totalitarian and monarchist party. They are supporters of Alfonso XIII, and have deep ties within the military.
+
+Current relations: [+ nsdap_relation : relationships +]
+
+**Other parties** - there is a multitude of small, mostly regionalist parties, such as the Republican Left of Catalonia, the Basque Nationalist Party, the Galicianist Party, and others. Most regionalist parties are left wing with some exceptions and are generally hostile to the right wing over their centralization agenda. There are also minor right wing parties like the Regionalist League of Catalonia, the Spanish Agrarian Party and the Traditionalist Communion.
+
+@paramilitaries
+on-arrival: {!
+Q.rb_strength = Math.round(Q.rb_strength);
+Q.sh_strength = Math.round(Q.sh_strength);
+Q.sa_strength = Math.round(Q.sa_strength); 
+!}
+go-to: menu
+
+**Militants groups:**
+
+**Socialist Militants**: Although not a organized organization the left wing of the country is highly militaint and frequently riots and fights to further the goal of a left wing republican spain.
+
+Strength: [+ rb_strength +] thousand
+
+Militarization: [+ rb_militancy : militancy +]
+
+**Anarchist Militants**: Anarchist are anti-state leftist that seek a immediate end to all hierarchy, they often support us but they are not afraid to fight us if needed.
+
+Strength: [+ rfb_strength +] thousand
+
+Militarization: [+ rfb_militancy : militancy +]
+
+**Monarchist Militants**: Right-wing nationalist monarchists militants of both Carlists and Bourban supporters, they are against the republic and for a return of the monarchy.
+
+Strength: [+ sh_strength +] thousand
+
+Militarization: [+ sh_militancy : militancy +]
+
+**Fascist Militants**: Militants associated with the falangist Spanish Phalanx and the national syndicalist JONS. These groups are also getting support from some in the CEDA youth wing.
+
+Strength: [+ sa_strength +] thousand
+
+Militarization: [+ sa_militancy : militancy +]
+
+**Regionalist Militants**: [+ regionalists_strength +] thousand members. Many people feel more connected to their regional identity then to Spain, these militants want either more autonomy or independence for their region. These generally support the us and our republican allies as long as we respect their autonomy.
+
+Loyalty: [+ regionalists_loyalty : loyalty +]
+
+**Official military:**
+
+**Ejército de la República Española**: [+ reichswehr_strength +] thousand troops. This is Spains military.
+
+Loyalty: [+ reichswehr_loyalty : loyalty +]
+
+
+
+
+
+@factions
+go-to: neorevisionists if neorevisionism > 0; menu if neorevisionism <= 0
+
+**Internal factions of the PSOE**
+
+Overall dissent: [+ dissent_percent : dissent +]
+
+**Left**
+
+The radicals of the party. They believe in a violent revolution to establish the dictatorship of the proletariat in Spain.
+
+Strength: [+ left_strength : strength +]
+
+Dissent: [+ left_dissent : dissent +]
+
+**Centrists**
+
+The moderates of the PSOE while they are still marxist they don't call for a violent revolution. They instead seek a middle course between reform and revolution, while defending the republic.
+
+Strength: [+ center_strength : strength +]
+
+Dissent: [+ center_dissent : dissent +]
+
+**Labor**
+
+Supporters of the labor movement and the PSOE aligned union UGT. Their goal is to help and empower the Unions of Spain to better the lifes of the Spanish workers.
+
+Strength: [+ labor_strength : strength +]
+
+Dissent: [+ labor_dissent : dissent +]
+
+**Reformists**
+
+The pragmatists are pragmatic participants in government, and seek to expand the welfare state and defend the republican project. [? if PSOE_prussia : They are dominant in the state government of Prussia. ?]
+
+Strength: [+ reformist_strength : strength +]
+
+Dissent: [+ reformist_dissent : dissent +]
+
+@neorevisionists
+go-to: menu
+
+**Neorevisionists**
+
+Neorevisionists focus on defending the republic and expanding democracy, while also expanding the party's base beyond the working class to create a people's party. They support new propaganda methods and extraparliamentary action in defense of the republic.
+
+Strength: [+ neorevisionist_strength : strength +]
+
+Dissent: [+ neorevisionist_dissent : dissent +]
+
+
+@figures
+title: Figures and Charts
+go-to: menu
+on-arrival: z_minus_bvp_r = z_r - 3;
+on-display: {!
+data = [
+    {
+        "id": "PCE",
+        "legend": "PCE",
+        "name": "PCE",
+        "seats": Q.PCE_r*5,
+    }];
+if (Q.sapd_formed && Q.sapd_r) {
+    data.push({
+            "id": "sapd",
+            "legend": "SAPD",
+            "name": "SAPD",
+            "seats": Math.round(Q.sapd_r*5),
+            });
+}
+data = data.concat([
+    {
+        "id": "PSOE",
+        "legend": "PSOE",
+        "name": "PSOE",
+        "seats": Q.PSOE_r*5,
+    },
+    {
+        "id": "PRRS",
+        "legend": "PRRS",
+        "name": "PRRS",
+        "seats": Q.PRRS_r*5,
+    },
+    {
+        "id": "z",
+        "legend": "Center",
+        "name": "AR",
+        "seats": Q.z_r*5,
+    },
+    {
+        "id": "dvp",
+        "legend": "DVP",
+        "name": "PRR",
+        "seats": Q.dvp_r*5,
+    },
+    {
+        "id": "other",
+        "legend": "Other",
+        "name": "Other",
+        "seats": Q.other_r*5,
+    },
+    {
+        "id": "dnvp",
+        "legend": "DNVP",
+        "name": "CEDA",
+        "seats": Q.dnvp_r*5,
+    },
+    {
+        "id": "nsdap",
+        "legend": "NSDAP",
+        "name": "RE",
+        "seats": Q.nsdap_r*5,
+    },
+]);
+if (d3 && window) {
+    // get screen width
+    var width = 500;
+    var height = 500;
+    var screenWidth = document.getElementById('content').offsetWidth;
+    if (screenWidth < width - 50) {
+        width = screenWidth - 50;
+        height = width;
+        document.getElementById("reichstag").style.height = screenWidth/2 + "px";
+    }
+    var parliament = d3.parliament();
+    parliament.width(width).height(height).innerRadiusCoef(0.4);
+    parliament.enter.fromCenter(true).smallToBig(true);
+    parliament.exit.toCenter(false).bigToSmall(true);
+    d3.select("#reichstag").datum(data).call(parliament);
+
+    var lines = d3.linegraph(false, false,
+            Q.parties,
+            {'PSOE': '#E3000F', 'PCE': '#8B0000', 'PRRS': '#DCCA4A', 'z': '#000', 'dvp': '#D5AC27', 'dnvp': '#3f7bc1', 'nsdap': '#954B00', 'other': '#a0a0a0', 'sapd': '#c40000'},
+            {'PSOE': 'PSOE', 'PCE': 'PCE', 'PRRS': Q.PRRS_name, 'z': 'Z + BVP', 'dvp': 'DVP', 'dnvp': 'DNVP', 'nsdap': 'NSDAP', 'other': 'Others', 'sapd': 'SAPD'});
+    lines.width(width).height(400);
+    //var svg = lines(Q.election_records);
+    if (Q.election_records.length > 0) {
+        d3.select("#election_history").datum(Q.election_records).call(lines);
+    }
+    //document.getElementById('election_history').innerHTML = svg.outerHTML;
+
+    // party support records should not have so many ticks
+    if (!Q.historical_mode || Q.game_over) {
+        var lines_2 = d3.linegraph(true, true,
+            Q.parties,
+            {'PSOE': '#E3000F', 'PCE': '#8B0000', 'PRRS': '#DCCA4A', 'z': '#000', 'dvp': '#D5AC27', 'dnvp': '#3f7bc1', 'nsdap': '#954B00', 'other': '#a0a0a0', 'sapd': '#c40000'},
+            {'PSOE': 'PSOE', 'PCE': 'PCE', 'PRRS': Q.PRRS_name, 'z': 'Z + BVP', 'dvp': 'DVP', 'dnvp': 'DNVP', 'nsdap': 'NSDAP', 'other': 'Others', 'sapd': 'SAPD'});
+        lines_2.width(width).height(400);
+        d3.select("#party_support_history").datum(Q.party_support_records).call(lines_2);
+    }
+
+    // economic stats
+    var minInflation = d3.min(Q.economic_records, d => d.inflation);
+    var maxUnemployment = d3.max(Q.economic_records, d => d.unemployment);
+    var lines_3 = d3.linegraph(true, true, ['inflation', 'unemployment'],
+            {'inflation': '#0000FF', 'unemployment': '#FF0000'},
+            {'inflation': 'Inflation', 'unemployment': 'Unemployment'},
+            maxUnemployment + 5, minInflation - 5, 21);
+    lines_3.width(width).height(300);
+    d3.select("#economic_history").datum(Q.economic_records).call(lines_3);
+}
+!}
+
+= Reichstag composition
+
+{!<svg id="reichstag" style="width: 500px; height: 250px;"> </svg>!}
+
+{!<table>!}
+{!<tr><td><div class="box" style='background-color:#E3000F; outline: 2px; outline-style: solid;'> </div></td><td>!} **PSOE:** {!</td><td>!} **[+ PSOE_r +]%** {!</td></tr>!}
+
+[? if sapd_formed : {!<tr><td><div class="box" style='background-color:#C40000'> </div></td> <td> !}SAPD: {!</td><td>!} [+ sapd_r +]% {!</td></tr>!} ?]
+
+{!<tr><td><div class="box" style='background-color:#8B0000'> </div></td> <td>!}PCE: {!</td><td>!} [+ PCE_r +]% {!</td></tr>!}
+
+{!<tr><td><div class="box" style='background-color:#DCCA4A'> </div></td><td>!} [+ PRRS_name +]: {!</td><td>!} [+ PRRS_r +]% {!</td></tr>!}
+
+{!<tr><td><div class="box" style='background-color:#000'> </div></td><td>!} Z: {!</td><td>!} [+ z_minus_bvp_r +]% {!</td></tr>!}
+
+{!<tr><td><div class="box" style='background-color:#69A2BE'> </div></td><td>!} BVP: {!</td><td>!} 3% {!</td></tr>!}
+
+{!<tr><td><div class="box" style='background-color:#D5AC27'> </div></td><td>!} DVP: {!</td><td>!} [+ dvp_r +]% {!</td></tr>!}
+
+{!<tr><td><div class="box" style='background-color:#a0a0a0'> </div></td><td>!} Other parties: {!</td><td>!} [+ other_r +] % {!</td></tr>!}
+
+{!<tr><td><div class="box" style='background-color:#3f7bc1'> </div></td><td>!} DNVP: {!</td><td>!} [+ dnvp_r +]% {!</td></tr>!}
+
+{!<tr><td><div class="box" style='background-color:#954B00'> </div></td><td>!} NSDAP: {!</td><td>!} [+ nsdap_r +]% {!</td></tr>!}
+{!</table>!}
+
+= Election history
+
+[? if year = 1928 and month < 5 : No new elections yet. ?]
+
+{!<svg id="election_history" style="width: 500px; height: 400px;"> </svg>!}
+
+= Party support history
+
+[? if historical_mode: Not available in historical mode. ?]
+
+{!<svg id="party_support_history" style="width: 500px; height: 400px;"> </svg>!}
+
+= Economic history
+
+{!<svg id="economic_history" style="width: 500px; height: 300px;"> </svg>!}
+# TODO: maybe add textual histories too? some accessibility stuff as well...

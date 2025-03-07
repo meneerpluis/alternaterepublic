@@ -1,0 +1,319 @@
+title: Election Simulation
+set-jump: post_election
+
+
+- @1928: 1931 historical scenario
+- @1930: 1933 historical scenario
+- @1932: 1936 historical scenario
+
+@1928
+on-arrival: {!
+Q.workers = 46; // industry and trade
+Q.old_middle = 13; // "old mittelstand"
+// 16.4 trade & commerce, 6.6 public and private services, 4.4 domestic help
+Q.new_middle = 14; // "new mittelstand"
+Q.rural = 25; // agriculture and forestry employment... but many of those are proletarians so...
+// source: https://surface.syr.edu/cgi/viewcontent.cgi?filename=3&article=1016&context=books&type=additional page 43, table 3.3
+Q.unemployed = 8.6;
+Q.catholics = 30;
+
+Q.classes = ['workers', 'old_middle', 'new_middle', 'rural', 'unemployed', 'catholics'];
+Q.parties = ['PSOE', 'PCE', 'z', 'PRRS', 'dvp', 'dnvp', 'nsdap', 'other'];
+
+// Support for party by social group
+// they don't have to sum to 100 since the electoral calculations will be normalized.
+Q.workers_PSOE = 65;
+Q.workers_PCE = 20;
+Q.workers_z = 5;
+Q.workers_PRRS = 0;
+Q.workers_dvp = 0;
+Q.workers_dnvp = 5;
+Q.workers_nsdap = 0;
+Q.workers_other = 10;
+
+Q.old_middle_PSOE = 5;
+Q.old_middle_PCE = 0;
+Q.old_middle_z = 5;
+Q.old_middle_PRRS= 10;
+Q.old_middle_dvp = 25;
+Q.old_middle_dnvp = 25;
+Q.old_middle_nsdap = 10;
+Q.old_middle_other = 10;
+
+Q.new_middle_PSOE = 5;
+Q.new_middle_PCE = 0;
+Q.new_middle_z = 10;
+Q.new_middle_PRRS= 25;
+Q.new_middle_dvp = 25;
+Q.new_middle_dnvp = 10;
+Q.new_middle_nsdap = 5;
+Q.new_middle_other = 15;
+
+Q.rural_PSOE = 10;
+Q.rural_PCE = 0;
+Q.rural_z = 5;
+Q.rural_PRRS= 5;
+Q.rural_dvp = 15;
+Q.rural_dnvp = 45;
+Q.rural_nsdap = 5;
+Q.rural_other = 10;
+
+Q.unemployed_PSOE = 25;
+Q.unemployed_PCE = 55;
+Q.unemployed_z = 1;
+Q.unemployed_PRRS = 0;
+Q.unemployed_dvp = 0;
+Q.unemployed_dnvp = 5;
+Q.unemployed_nsdap = 15;
+Q.unemployed_other = 9;
+
+Q.catholics_PSOE = 15;
+Q.catholics_PCE = 5;
+Q.catholics_z = 50;
+Q.catholics_PRRS = 0;
+Q.catholics_dvp = 5;
+Q.catholics_dnvp = 5;
+Q.catholics_nsdap = 0;
+Q.catholics_other = 10;
+!}
+go-to: election_algorithm
+set-jump: post_election
+
+@1930
+on-arrival: {!
+Q.workers = 46; // industry and trade
+Q.old_middle = 13; // "old mittelstand"
+// 16.4 trade & commerce, 6.6 public and private services, 4.4 domestic help
+Q.new_middle = 14; // "new mittelstand"
+Q.rural = 25; // agriculture and forestry employment... but many of those are proletarians so...
+// source: https://surface.syr.edu/cgi/viewcontent.cgi?filename=3&article=1016&context=books&type=additional page 43, table 3.3
+Q.unemployed = 20;
+Q.catholics = 30;
+
+Q.classes = ['workers', 'old_middle', 'new_middle', 'rural', 'unemployed', 'catholics'];
+Q.parties = ['PSOE', 'PCE', 'z', 'PRRS', 'dvp', 'dnvp', 'nsdap', 'other'];
+
+// Support for party by social group
+// they don't have to sum to 100 since the electoral calculations will be normalized.
+Q.workers_PSOE = 60;
+Q.workers_PCE = 20;
+Q.workers_z = 5;
+Q.workers_PRRS = 0;
+Q.workers_dvp = 0;
+Q.workers_dnvp = 0;
+Q.workers_nsdap = 10;
+Q.workers_other = 15;
+
+Q.old_middle_PSOE = 5;
+Q.old_middle_PCE = 0;
+Q.old_middle_z = 5;
+Q.old_middle_PRRS= 5;
+Q.old_middle_dvp = 10;
+Q.old_middle_dnvp = 20;
+Q.old_middle_nsdap = 30;
+Q.old_middle_other = 15;
+
+Q.new_middle_PSOE = 5;
+Q.new_middle_PCE = 0;
+Q.new_middle_z = 5;
+Q.new_middle_PRRS = 10;
+Q.new_middle_dvp = 20;
+Q.new_middle_dnvp = 10;
+Q.new_middle_nsdap = 25;
+Q.new_middle_other = 15;
+
+Q.rural_PSOE = 5;
+Q.rural_PCE = 0;
+Q.rural_z = 5;
+Q.rural_PRRS= 5;
+Q.rural_dvp = 10;
+Q.rural_dnvp = 20;
+Q.rural_nsdap = 25;
+Q.rural_other = 15;
+
+Q.unemployed_PSOE = 20;
+Q.unemployed_PCE = 50;
+Q.unemployed_z = 0;
+Q.unemployed_PRRS = 0;
+Q.unemployed_dvp = 0;
+Q.unemployed_dnvp = 5;
+Q.unemployed_nsdap = 25;
+Q.unemployed_other = 5;
+
+Q.catholics_PSOE = 10;
+Q.catholics_PCE = 5;
+Q.catholics_z = 50;
+Q.catholics_PRRS = 0;
+Q.catholics_dvp = 5;
+Q.catholics_dnvp = 5;
+Q.catholics_nsdap = 10;
+Q.catholics_other = 5;
+
+Q.PSOE_r = 25;
+Q.PCE_r = 10;
+Q.z_r = 15;
+Q.PRRS_r = 10;
+Q.dvp_r = 10;
+Q.dnvp_r = 14;
+Q.nsdap_r = 10;
+Q.other_r = 5;
+!}
+go-to: election_algorithm
+set-jump: post_election
+
+@1932
+on-arrival: {!
+Q.workers = 46; // industry and trade
+Q.old_middle = 13; // "old mittelstand"
+// 16.4 trade & commerce, 6.6 public and private services, 4.4 domestic help
+Q.new_middle = 14; // "new mittelstand"
+Q.rural = 25; // agriculture and forestry employment... but many of those are proletarians so...
+// source: https://surface.syr.edu/cgi/viewcontent.cgi?filename=3&article=1016&context=books&type=additional page 43, table 3.3
+Q.unemployed = 33;
+Q.catholics = 30;
+
+Q.classes = ['workers', 'old_middle', 'new_middle', 'rural', 'unemployed', 'catholics'];
+Q.parties = ['PSOE', 'PCE', 'z', 'PRRS', 'dvp', 'dnvp', 'nsdap', 'other'];
+
+// Support for party by social group
+// they don't have to sum to 100 since the electoral calculations will be normalized.
+Q.workers_PSOE = 55;
+Q.workers_PCE = 20;
+Q.workers_z = 5;
+Q.workers_PRRS = 0;
+Q.workers_dvp = 0;
+Q.workers_dnvp = 0;
+Q.workers_nsdap = 15;
+Q.workers_other = 5;
+
+Q.old_middle_PSOE = 0;
+Q.old_middle_PCE = 0;
+Q.old_middle_z = 5;
+Q.old_middle_PRRS = 4;
+Q.old_middle_dvp = 4;
+Q.old_middle_dnvp = 15;
+Q.old_middle_nsdap = 70;
+Q.old_middle_other = 5;
+
+Q.new_middle_PSOE = 5;
+Q.new_middle_PCE = 0;
+Q.new_middle_z = 5;
+Q.new_middle_PRRS = 10;
+Q.new_middle_dvp = 10;
+Q.new_middle_dnvp = 10;
+Q.new_middle_nsdap = 60;
+Q.new_middle_other = 5;
+
+Q.rural_PSOE = 0;
+Q.rural_PCE = 0;
+Q.rural_z = 5;
+Q.rural_PRRS = 0;
+Q.rural_dvp = 5;
+Q.rural_dnvp = 15;
+Q.rural_nsdap = 65;
+Q.rural_other = 5;
+
+Q.unemployed_PSOE = 20;
+Q.unemployed_PCE = 40;
+Q.unemployed_z = 0;
+Q.unemployed_PRRS = 0;
+Q.unemployed_dvp = 0;
+Q.unemployed_dnvp = 0;
+Q.unemployed_nsdap = 50;
+Q.unemployed_other = 5;
+
+Q.catholics_PSOE = 10;
+Q.catholics_PCE = 5;
+Q.catholics_z = 60;
+Q.catholics_PRRS = 0;
+Q.catholics_dvp = 5;
+Q.catholics_dnvp = 5;
+Q.catholics_nsdap = 10;
+Q.catholics_other = 5;
+
+Q.PSOE_r = 25;
+Q.PCE_r = 10;
+Q.z_r = 15;
+Q.PRRS_r = 10;
+Q.dvp_r = 10;
+Q.dnvp_r = 14;
+Q.nsdap_r = 10;
+Q.other_r = 5;
+!}
+go-to: election_algorithm
+set-jump: post_election
+
+@post_election
+on-arrival: {!
+// set congress proportion to votes
+Q.PSOE_r = Q.PSOE_votes;
+Q.z_r = Q.z_votes;
+Q.PCE_r = Q.PCE_votes;
+Q.PRRS_r = Q.PRRS_votes;
+Q.dvp_r = Q.dvp_votes;
+Q.dnvp_r = Q.dnvp_votes;
+Q.nsdap_r = Q.nsdap_votes;
+Q.other_r = Q.other_votes;
+
+// The largest party can only be the NSDAP or the PSOE.
+Q.largest_party = 'PSOE';
+if (Q.nsdap_r >= Q.PSOE_r && Q.nsdap_r >= Q.PCE_r) {
+    Q.largest_party = 'NSDAP';
+}
+if (Q.PCE_r >= Q.PSOE_r && Q.PCE_r >= Q.nsdap_r) {
+    Q.largest_party = 'PCE';
+}
+
+// coalitions
+Q.weimar_coalition = Q.PSOE_r + Q.PRRS_r + Q.z_r - 3;
+Q.grand_coalition = Q.PSOE_r + Q.PRRS_r + Q.z_r + Q.dvp_r;
+Q.bourgeois_coalition = Q.PRRS_r + Q.z_r + Q.dvp_r + Q.other_r;
+Q.center_right_coalition = Q.z_r + Q.PRRS_r + Q.dvp_r + Q.other_r + Q.dnvp_r;
+Q.right_coalition = Q.z_r + Q.dvp_r + Q.other_r + Q.dnvp_r;
+Q.far_right_coalition = Q.dnvp_r + Q.nsdap_r;
+Q.left_coalition = Q.PSOE_r + Q.PCE_r;
+// this is an absurd concept lol
+Q.united_front_coalition = Q.PSOE_r + Q.PCE_r + Q.z_r + Q.PRRS_r - 3;
+Q.anti_democratic_coalition = Q.PCE_r + Q.nsdap_r;
+// aka everyone except nazi, PCE, dnvp
+Q.neo_weimar_coalition = Q.PSOE_r + Q.PRRS_r + Q.z_r + Q.dvp_r + Q.other_r;
+!}
+
+The electoral system is essentially proportional, with the proportion of Reichstag seats roughly equal to the proportion of votes.
+ 
+**Election results:**
+
+# 1931: 24, 1933: 25, 1936: 22
+PSOE: [+ PSOE_r +]
+
+# 1931: 6, 1933: 15, 1936: 
+AR: [+ z_r +]
+
+# 1931: 0, 1933: 13
+PCE: [+ PCE_r +]
+
+# 1931: 13, 1933: 4 (as UR)
+PRRS: [+ PRRS_r +]
+
+# 1931: 19, 1933: 5
+PRR: [+ dvp_r +]
+
+# 1931: 1, 1933: 7
+CEDA: [+ dnvp_r +]
+
+# 1931: 1, 1933: 18
+RE: [+ nsdap_r +]
+
+# 1931: 36, 1933: 10
+Other: [+ other_r +]
+
+**Potential coalitions:**
+
+Popular Front (PSOE + AR + PRRS + PCE + Others): [+ weimar_coalition +]
+
+Republican-Socialist (PSOE + PRR + AR + PRRS + PRR + Others): [+ grand_coalition +]
+
+Liberal Coalition (PRR + AR + PRRS + Others): [+ bourgeois_coalition +]
+
+Right-wing Coalition (PRR + CEDA + RE + Others): [+ right_coalition +]
+

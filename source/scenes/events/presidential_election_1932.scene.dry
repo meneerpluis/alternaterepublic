@@ -1,0 +1,343 @@
+title: Presidential Election
+subtitle: It's time to vote for a president
+view-if: year = 1931 and (month = 6 or month = 7) and presidential_election_seen = 0
+frequency: 1000
+max-visits: 1
+new-page: true
+on-arrival: braun_campaign = 0; hitler_support_hindenburg = 0; presidential_election_seen = 1; nsdap_candidate = "Herrera Oria" if hitler_deported == 0 else nsdap_candidate = "Göring";
+tags: event
+go-to: election_algorithm
+set-jump: pres_election
+face-image: img/hindenburg_election.jpg
+
+@pres_election
+
+Now that the elections are over parliament should vote for a President. 
+[? if sapd_formed: The SAPD, our former leftists, are supporting Thälmann of the PCE, and will likely share an endorsement with the Communists. ?]
+
+# if hitler is deported, who would nsdap run? Duesterberg? or Goering?
+# Goering runs, essentially as a proxy for Hitler, who is now stateless.
+
+Many are calling for us to support conservative republican Niceto Alcalá-Zamora, despite him being a conservative, he is a moderate and supports the republic. On the other hand, many in our party are calling for Manuel Azaña a left-liberal and fierce anti-clerical republican.
+
+[? if PCE_relation >= 50 : Another strange possibilty is an united front with the Communists, either to support Thälmann or our own candidate. ?]
+
+
+- @support_hindenburg: Support Niceto Alcalá-Zamora.
+- @support_braun: Run Manuel Azaña of the AR.
+
+@support_hindenburg
+subtitle: This is the default option.
+
+Despite being more conservative then we would like, Alcalá-Zamora is a show of republican unity. Thus, we must support him.
+
+- @final_election: The final vote...
+
+@support_braun
+subtitle: This will cost us 2 resources.
+choose-if: resources >= 2
+unavailable-subtitle: Not enough resources.
+on-arrival: resources -= 2; braun_campaign = 1
+go-to: braun_campaign
+
+It takes effort to run a somewhat unexpected campaign. First, Azaña has to be convinced to run. He himself had supported voting for Alcalá-Zamora, and it takes a good deal of prodding to convince him of his destiny.
+
+The Republican Action will likely support us. Who else will? Can we convince the Radical Socialist Republican Party? What about the Radical Republican Party?
+
+
+@braun_campaign
+
+- @convince_z: Convince the Radical Socialist Republican Party.
+- @convince_liberals: Convince the Radical Republican Party.
+- @final_election: The final vote...
+
+@convince_z
+choose-if: PSOE_votes >= z_votes
+unavailable-subtitle: The Center knows that they are more popular than us; they do not see a reason to support our candidate.
+on-arrival: {!
+Q.z_support_braun = 0;
+if (Q.z_relation >= 55 || (Q.z_relation > 35 && Q.z_party_leader == "Joos")) {
+    Q.z_support_braun = 1;
+} else if (Q.z_relation <= 35) {
+    Q.z_support_braun = 0;
+} else {
+    Q.z_support_braun = 2;
+}
+!}
+go-to: z_failed if z_support_braun = 0 or (z_support_braun == 2 and historical_mode); z_success if z_support_braun = 1; z_partial if z_support_braun = 2 and not historical_mode
+max-visits: 1
+
+We remind the Radical Socialist Republican Party leaders of Alcalá-Zamora right leaning politics, and try to convince them that Alcalá-Zamora's path will eventually lead to a return of the aristocracy.
+
+@z_success
+go-to: braun_campaign
+
+The Radical Socialist Republican Party are convinced! They will be part of the Azaña coalition.
+
+@z_partial
+
+The Radical Socialist Republican Party are not satisfied with our arguments, but they are open to being convinced. They are willing to run a joint campaign if we front the resources.
+
+- @pay_z: Give them the resources they need.
+- @braun_campaign: Forget about those liberals.
+
+@pay_z
+choose-if: resources >= 3
+subtitle: -3 resources
+unavailable-subtitle: Not enough resources (need 3)
+on-arrival: resources -= 3; z_support_braun = 1
+go-to: braun_campaign
+
+With our resources, the Radical Socialist Republican Party are convinced to support Azaña over Alcalá-Zamora.
+
+@z_failed
+go-to: braun_campaign
+
+Unfortunately, we fail to turn them away from Alcalá-Zamora.
+
+
+@convince_liberals
+max-visits: 1
+go-to: convince_liberals_success if dvp_relation >= 90; convince_liberals_fail if dvp_relation < 90
+
+The liberal PRR does not like his left leaning views, so they will probably be of minimal help to us.
+
+@convince_liberals_success
+on-arrival: dvp_support_braun = 1
+go-to: braun_campaign
+
+Thanks to our good relations, the PRR has promised to support Azaña in the election.
+
+@convince_liberals_fail
+on-arrival: dvp_support_braun = 0
+go-to: braun_campaign
+
+We failed to convince the PRR to support Azaña.
+
+
+
+@final_election
+on-arrival: election_round = 0
+go-to: election_algorithm
+set-jump: post_election
+
+
+@post_election
+on-arrival: {!
+Q.braun_votes = 0;
+Q.hindenburg_votes = 0;
+Q.hitler_votes = 0;
+Q.thalmann_votes = 0;
+
+// initial phase:
+Q.hitler_votes += Q.nsdap_normalized;
+Q.hindenburg_votes += Q.other_normalized;
+Q.hindenburg_votes += Q.dnvp_normalized;
+
+if (Q.braun_campaign) {
+    Q.braun_votes += Q.PSOE_normalized;
+    Q.braun_votes += Q.PRRS_normalized;
+    if (Q.z_support_braun && Q.z_support_braun == 1) {
+        Q.braun_votes += Q.z_normalized;
+    } else {
+        Q.hindenburg_votes += Q.z_normalized;
+    }
+    if (Q.PCE_support_braun) {
+        Q.braun_votes += Q.PCE_normalized;
+        if (Q.sapd_formed && Q.sapd_votes) {
+            Q.braun_votes += Q.sapd_normalized;
+        }
+    } else {
+        Q.thalmann_votes += Q.PCE_normalized;
+        if (Q.sapd_formed && Q.sapd_votes) {
+            Q.thalmann_votes += Q.sapd_normalized;
+        }
+    }
+    if (Q.dvp_support_braun) {
+        Q.braun_votes += Q.dvp_normalized;
+    } else {
+        Q.hindenburg_votes += Q.dvp_normalized;
+    }
+} else if (Q.PSOE_support_thalmann) {
+    Q.thalmann_votes += Q.PCE_normalized;
+    Q.thalmann_votes += Q.PSOE_normalized;
+    Q.hindenburg_votes += Q.z_normalized;
+    Q.hindenburg_votes += Q.PRRS_normalized;
+    Q.hindenburg_votes += Q.dvp_normalized;
+} else {
+    Q.hindenburg_votes += Q.PSOE_normalized;
+    Q.hindenburg_votes += Q.z_normalized;
+    Q.hindenburg_votes += Q.PRRS_normalized;
+    Q.hindenburg_votes += Q.dvp_normalized;
+    Q.thalmann_votes += Q.PCE_normalized;
+}
+if (Q.hitler_support_hindenburg) {
+    Q.hitler_votes -= Q.nsdap_normalized;
+    Q.hindenburg_votes += Q.nsdap_normalized;
+}
+
+if (Q.hindenburg_to_braun_bonus) {
+    Q.hindenburg_votes -= Q.hindenburg_to_braun_bonus;
+    Q.braun_votes += Q.hindenburg_to_braun_bonus;
+}
+if (Q.thalmann_to_braun_bonus) {
+    Q.thalmann_votes -= Q.thalmann_to_braun_bonus;
+    Q.braun_votes += Q.thalmann_to_braun_bonus;
+}
+
+// check for majority
+Q.hindenburg_votes = Math.round(Q.hindenburg_votes*1000)/10;
+Q.braun_votes = Math.round(Q.braun_votes*1000)/10;
+Q.hitler_votes = Math.round(Q.hitler_votes*1000)/10;
+Q.thalmann_votes = Math.round(Q.thalmann_votes*1000)/10;
+
+Q.hindenburg_majority = (Q.hindenburg_votes >= 50);
+Q.thalmann_majority = (Q.thalmann_votes >= 50);
+Q.hitler_majority = (Q.hitler_votes >= 50);
+Q.braun_majority = (Q.braun_votes >= 50);
+Q.any_majority = Q.hindenburg_majority | Q.thalmann_majority | Q.hitler_majority | Q.braun_majority;
+
+// check for plurality
+Q.hindenburg_plurality = (Q.hindenburg_votes >= Q.hitler_votes && Q.hindenburg_votes >= Q.braun_votes && Q.hindenburg_votes >= Q.thalmann_votes);
+Q.thalmann_plurality = (Q.thalmann_votes >= Q.hindenburg_votes && Q.thalmann_votes >= Q.braun_votes && Q.thalmann_votes >= Q.hitler_votes);
+Q.hitler_plurality = (Q.hitler_votes >= Q.hindenburg_votes && Q.hitler_votes >= Q.braun_votes && Q.hitler_votes >= Q.thalmann_votes);
+Q.braun_plurality = (Q.braun_votes >= Q.hindenburg_votes && Q.braun_votes >= Q.hitler_votes && Q.braun_votes >= Q.thalmann_votes);
+// If no candidate gets above 50%, then there's a second round. In the second round, a plurality wins. 
+Q.election_round += 1;
+
+// making the vote numbers nicer for the display
+Q.hindenburg_votes_disp = Q.hindenburg_votes.toFixed(1);
+Q.braun_votes_disp = Q.braun_votes.toFixed(1);
+Q.hitler_votes_disp = Q.hitler_votes.toFixed(1);
+Q.thalmann_votes_disp = Q.thalmann_votes.toFixed(1);
+!}
+go-to: hindenburg_wins if hindenburg_majority == 1; thalmann_wins if thalmann_majority == 1; hitler_wins if hitler_majority == 1; braun_wins if braun_majority == 1; no_majority_round1 if any_majority == 0 and election_round == 1; round2_results if election_round >= 2
+
+Results:
+
+Alcalá-Zamora - [+ hindenburg_votes_disp +]%
+
+[+ nsdap_candidate +] - [+ hitler_votes_disp +]%
+
+[? if braun_campaign > 0 : Azaña - [+ braun_votes_disp +]% ?]
+
+@no_majority_round1
+on-arrival: hitler_support_hindenburg = 1 if (braun_plurality or thalmann_plurality)
+go-to: round2_menu
+
+There is no majority in this round. In the second round, any candidate who wins a plurality will win overall. What should we do?
+
+[? if braun_plurality or thalmann_plurality : In order to consolidate the vote for the Right, and to prevent a socialist from becoming president, [+ nsdap_candidate +] is no longer running in the second round, and has switched his endorsement to Hindenburg. ?]
+
+
+@round2_menu
+
+- @round2_convince_z: Convince the Radical Socialist Republican Party to switch their support to us.
+- @round2_hindenburg: Switch our support to Niceto Alcalá-Zamora.
+- @round2_vote: Let the second round voting begin.
+
+
+@round2_convince_z
+view-if: braun_campaign > 0 and z_support_braun != 1 
+choose-if: PSOE_votes >= z_votes
+unavailable-subtitle: The Center knows that they are more popular than us; they do not see a reason to support our candidate.
+on-arrival: {!
+Q.z_support_braun = 0;
+// if Hindenburg support is greater than Hitler and Braun support, this should be much harder
+
+if ((Q.z_relation >= 55 && Q.braun_votes >= Q.hindenburg_votes) || (Q.z_relation > 35 && Q.z_party_leader == "Joos")) {
+    Q.z_support_braun = 1;
+    if (Q.hitler_support_hindenburg) {
+        Q.hindenburg_to_braun_bonus += Q.other_normalized/2;
+    }
+} else if (Q.z_relation >= 50 && Q.hitler_support_hindenburg) {
+    Q.z_support_braun = 1;
+    Q.hindenburg_to_braun_bonus += Q.other_normalized/2;
+} else if (Q.z_relation <= 35 || (Q.z_relation <= 45 && Q.braun_votes < Q.hindenburg_votes && Q.hindenburg_votes > Q.hitler_votes && Q.difficulty >= 0)) {
+    Q.z_support_braun = 0;
+} else {
+    Q.z_support_braun = 2;
+}
+!}
+go-to: r2_z_failed if z_support_braun = 0 or (z_support_braun = 2 and historical_mode); r2_z_success if z_support_braun = 1; r2_z_partial if z_support_braun = 2 and not historical_mode
+max-visits: 1
+
+@r2_z_success
+go-to: round2_menu
+on-departure: hitler_support_hindenburg = 1 if braun_votes + z_votes > hitler_votes
+
+[? if hitler_support_hindenburg : The Center's opinion is affected by the Nazis' support of Hindenburg, and is willing to turn away from him. ?] The Center are convinced! They will be part of the Braun coalition. [? if hitler_support_hindenburg : In addition, they will also bring in some minor parties who will support us. ?]
+
+[? if not hitler_support_hindenburg and braun_votes + z_votes > hitler_votes: With the Center Party supporting Braun, [+ nsdap_candidate +] has dropped out of the race, and the Nazis have endorsed Hindenburg to prevent a socialist from becoming president. ?]
+
+@r2_z_partial
+
+The Center are not satisfied with our arguments, but they are open to being convinced[? if hitler_support_hindenburg: , especially given the Nazis' support for Hindenburg. ?]. They are willing to run a joint campaign if we front the resources.
+
+- @r2_pay_z: Give them the resources they need.
+- @round2_menu: Forget about the Center.
+
+@r2_pay_z
+choose-if: resources >= 2
+subtitle: -2 resources
+unavailable-subtitle: Not enough resources (need 2)
+on-arrival: resources -= 2; z_support_braun = 1
+on-departure: hitler_support_hindenburg = 1 if braun_votes + z_votes > hitler_votes
+go-to: round2_menu
+
+With our resources, the Center are convinced to support Braun over Hindenburg.
+
+[? if not hitler_support_hindenburg and braun_votes + z_votes > hitler_votes: With the Center Party supporting Braun, [+ nsdap_candidate +] has dropped out of the race, and the Nazis have endorsed Hindenburg to prevent a socialist from becoming president. ?]
+
+@r2_z_failed
+go-to: round2_menu
+
+Unfortunately, we fail to turn them away from Niceto Alcalá-Zamora. [? if hindenburg_votes > braun_votes : Given that Hindenburg received more votes than Braun, they believe that we should turn to Hindenburg, not the other way around. ?]
+
+
+
+[? if z_support_braun : The Center Party is confused at our capricious behavior, and have switched their support to Hindenburg. ?]
+
+- @round2_vote: Let the second round voting begin.
+
+@round2_hindenburg
+view-if: braun_campaign > 0 or PSOE_support_thalmann > 0
+on-arrival: braun_campaign = 0; PSOE_support_thalmann = 0
+
+We have switched our support to Niceto Alcalá-Zamora.
+
+- @round2_vote: Let the second round voting begin.
+
+@round2_vote
+go-to: election_algorithm
+set-jump: post_election
+
+@round2_results
+go-to: hindenburg_wins if hindenburg_plurality == 1; thalmann_wins if thalmann_plurality == 1; braun_wins if braun_plurality == 1; hitler_wins if hitler_plurality == 1
+
+
+@hindenburg_wins
+on-arrival: president = "Hindenburg"
+
+As expected Niceto Alcalá-Zamora wins the presidency. Let's hope he continues to keep the right out of power.
+
+@thalmann_wins
+on-arrival: president = "Thälmann"; PCE_relation = 80;
+
+Ernst Thälmann of the PCE has won the presidency. Immediately, the far-right launches a coup attempt against the government. We have no choice but to unite with the PCE against the fascists...
+
+- @civil_war: This is civil war.
+
+@hitler_wins
+on-arrival: president = nsdap_candidate; chancellor = "Hitler"; chancellor_party = "NSDAP"
+
+[? if nsdap_candidate == "Hitler" : Adolf Hitler of the NSDAP has won the presidency. He wastes no time in consolidating power. ?]
+[? if nsdap_candidate != "Hitler" : The NSDAP candidate [+ president +] has won. The first action President [+ president +] takes is inviting Hitler back into Germany, and appointing him chancellor. The Nazis waste no time in consolidating power. ?]
+
+- @hitler_takes_power: What do we do now?
+
+
+@braun_wins
+on-arrival: president = "Braun"; reformist_dissent -= 15; center_dissent -= 15; labor_dissent -= 15; left_dissent -= 5; workers_PSOE += 8*(1-dissent); old_middle_PSOE += 5*(1-dissent); new_middle_PSOE += 5*(1-dissent); rural_PSOE += 5*(1-dissent); unemployed_PSOE += 5*(1-dissent);
+
+Manuel Azaña of the AR has won the vote! This is a moment of celebration for our party, and his victory is able to bolster republican support.

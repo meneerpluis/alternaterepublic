@@ -1,0 +1,193 @@
+title: Status
+new-page: true
+is-special: true
+on-arrival: {!
+if (Q.unemployed) {
+    Q.unemployed_2 = Q.unemployed.toFixed(1);
+}
+if (Q.inflation) {
+    Q.inflation_2 = Q.inflation.toFixed(1);
+}
+Q.economic_growth_2 = '0';
+if (Q.economic_growth) {
+    Q.economic_growth_2 = Q.economic_growth.toFixed(1);
+}
+!}
+
+= Status
+
+[+ month : month +] [+ year +]
+
+Resources available: [+ resources +]
+
+PSOE position: [? if PSOE_toleration : toleration ?][? if PSOE_in_government : in government - ?][? if PSOE_toleration == 0 and PSOE_in_government == 0 and PSOE_caretaker == 0 : opposition ?][? if PSOE_caretaker : caretaker government ?]
+[? if in_weimar_coalition and PSOE_in_government: Weimar Coalition ?][? if in_grand_coalition and PSOE_in_government: Grand Coalition ?][? if in_popular_front and PSOE_in_government: Popular Front ?][? if in_left_front and PSOE_in_government: Left Front ?][? if in_PSOE_majority and PSOE_in_government: PSOE majority ?][? if in_minority_government and PSOE_in_government: minority government ?][? if in_emergency_government and PSOE_in_government: emergency government ?]
+
+[? if PSOE_in_government and not in_PSOE_majority and not in_left_front : Coalition dissent: [+ coalition_dissent : coalition_dissent +] ?]
+
+[? if PSOE_in_government and (in_left_front or in_popular_front): PCE coalition dissent: [+ PCE_coalition_dissent : coalition_dissent +] ?]
+
+Internal dissent: [+ dissent_percent : dissent +]
+
+= Government
+
+President: [+ president +]
+
+Prime Minister: [+ chancellor +] ([+ chancellor_party +])
+
+Reichstag composition:
+
+# 1928: 30, 1930: 25, 1932: 22
+{!<span class="tooltip-text" title="Social Democratic Party of Germany">PSOE</span>!}: [+ PSOE_r +]%
+[? if sapd_formed and sapd_r > 0: SAPD: [+ sapd_r +]% ?]
+# 1928: 15, 1930: 15, 1932: 
+{!<span class="tooltip-text" title="Center Party + Bavarian People's Party">Z + BVP</span>!}: [+ z_r +]%
+# 1928: 10, 1930: 13
+{!<span class="tooltip-text" title="Communist Party of Germany">PCE</span>!}: [+ PCE_r +]%
+# 1928: 5, 1930: 4 (as UR)
+{!<span class="tooltip-text" title="German Democratic Party">!}[? if not PRRS_name: PRRS?][? if PRRS_name != 0 : [+ PRRS_name +]?]{!</span>!}: [+ PRRS_r +]%
+# 1928: 9, 1930: 5
+{!<span class="tooltip-text" title="German People's Party">DVP</span>!}: [+ dvp_r +]%
+# 1928: 14, 1930: 7
+{!<span class="tooltip-text" title="German National People's Party">DNVP</span>!}: [+ dnvp_r +]%
+# 1928: 3, 1930: 18
+{!<span class="tooltip-text" title="National-Socialist German Worker's Party (Nazis)">NSDAP</span>!}: [+ nsdap_r +]%
+# 1928: 9, 1930: 10
+Others: [+ other_r +]%
+
+[? if PSOE_in_government = 1 : Budget: [+ budget +] ?]
+
+Next election: [+ next_election_month : month +] [+ next_election_year +]
+
+= Economics
+
+Inflation: [+ inflation_2 +]%
+
+[? if black_thursday_seen = 1 : Unemployment: [+ unemployed_2 +]% ?]
+
+Economic growth: [+ economic_growth_2 +]%
+
+
+
+# = Public Opinion
+
+@politics
+
+= Inter-party Relations
+
+
+{!<span class="tooltip-text" title="Center Party">Z</span>!}: [+ z_relation : relationships +]
+
+{!<span class="tooltip-text" title="German Democratic Party">!}[? if not PRRS_name: PRRS?][? if PRRS_name != 0 : [+ PRRS_name +]?]{!</span>!}: [+ PRRS_relation : relationships +]
+
+{!<span class="tooltip-text" title="German People's Party">DVP</span>!}: [+ dvp_relation : relationships +]
+
+{!<span class="tooltip-text" title="Communist Party of Germany">PCE</span>!}: [+ PCE_relation : relationships +]
+
+{!<span class="tooltip-text" title="German National People's Party">DNVP</span>!}: [+ dnvp_relation : relationships +]
+
+{!<span class="tooltip-text" title="National-Socialist German Worker's Party (Nazis)">NSDAP</span>!}: [+ nsdap_relation : relationships +]
+
+= Internal Factions of the PSOE
+
+{!<span class="tooltip-text" title="The Revolutionaries are interested in radical, transformative policies.">Left</span>!} strength: [+ left_strength : strength +], dissent: [+ left_dissent : dissent +]
+
+{!<span class="tooltip-text" title="The Center is a faction of Center Marxists, between reform and revolution.">Center</span>!} strength: [+ center_strength : strength +], dissent: [+ center_dissent : dissent +]
+
+{!<span class="tooltip-text" title="Labor's goal is economic reform and benefits for organized workers.">Labor</span>!} strength: [+ labor_strength : strength +], dissent: [+ labor_dissent : dissent +]
+
+{!<span class="tooltip-text" title="Pragmatists are pragmatic participants in government, and seek to expand the welfare state and defend democracy.">Reformist</span>!} strength: [+ reformist_strength : strength +], dissent: [+ reformist_dissent : dissent +]
+
+[? if neorevisionism > 0 : Neorevisionist strength: [+ neorevisionist_strength : strength +], dissent: [+ neorevisionist_dissent : dissent +] ?]
+
+
+@paramilitaries
+on-arrival: {!
+if (Q.rb_strength) {
+    Q.rb_strength_2 = Q.rb_strength.toFixed(1);
+}
+if (Q.rfb_strength) {
+    Q.rfb_strength_2 = Q.rfb_strength.toFixed(1);
+}
+if (Q.sh_strength) {
+    Q.sh_strength_2 = Q.sh_strength.toFixed(1);
+}
+if (Q.sa_strength) {
+    Q.sa_strength_2 = Q.sa_strength.toFixed(1);
+}
+!}
+
+= Militant groups
+
+{!<span class="tooltip-text" title="The socialist militants Schwarz-Rot-Gold is a popular organization for defending democracy, mostly affiliated with the PSOE.">socialist militants</span>!} Strength: [+ rb_strength_2 +] thousand
+
+Socialist Militants Militarization: [+ rb_militancy : militancy +]
+
+{!<span class="tooltip-text" title="Anarchist Militants are anarchist aligned with the left, but not subordinate to them.">Anarchist Militants</span>!} Strength: [+ rfb_strength_2 +] thousand
+
+Anarchist militants Militarization: [+ rfb_militancy : militancy +]
+
+{!<span class="tooltip-text" title="Monarchist are right-wing militants that either want the return of the Carlist line or the Bourbon line.">Monarchist Militants</span>!} Strength: [+ sh_strength_2 +] thousand
+
+Monarchist Militants Militarization: [+ sh_militancy : militancy +]
+
+{!<span class="tooltip-text" title="Fascists are falangists, corporatists and national syndicalists that are hostile to socialism and democracy .">Fascist Militants</span>!} Strength: [+ sa_strength_2 +] thousand
+
+Fascist Militants Militarization: [+ sa_militancy : militancy +]
+
+Regionalists: [+ regionalists_strength +] thousand members.
+
+Regionalists loyalty: [+ regionalists_loyalty : loyalty +]
+
+= Official military
+
+Ejército de la República Española: [+ reichswehr_strength +] thousand troops.
+
+Ejército de la República Española Loyalty: [+ reichswehr_loyalty : loyalty +]
+
+[? if PSOE_in_government : Interior police loyalty: [+ interior_police_loyalty : loyalty +] ?]
+
+@polls
+on-arrival: {!
+Q.pro_republic_disp = Math.round(Q.pro_republic);
+Q.nationalism_disp = Math.round(Q.nationalism);
+Q.socialism_disp = Math.round(Q.socialism);
+!}
+
+= Projected election results
+
+(if the election were to be held now):
+
+PSOE: [+ PSOE_votes +]%
+
+[? if sapd_formed: SAPD: [+ sapd_votes +]% ?]
+
+AR: [+ z_votes +]%
+
+PCE: [+ PCE_votes +]%
+
+[? if not PRRS_name: PRRS?][? if PRRS_name != 0 : [+ PRRS_name +]?]: [+ PRRS_votes +]%
+
+PRR: [+ dvp_votes +]%
+
+CEDA: [+ dnvp_votes +]%
+
+RE: [+ nsdap_votes +]%
+
+Others: [+ other_votes +]%
+
+**Detailed results for each demographic**
+
+Workers: PSOE: [+ workers_PSOE_display +]%, AR: [+ workers_z_display +]%, PCE: [+ workers_PCE_display +]%, [? if not PRRS_name: PRRS?][? if PRRS_name != 0 : [+ PRRS_name +]?]: [+ workers_PRRS_display +]%, PRR: [+ workers_dvp_display +]%; CEDA: [+ workers_dnvp_display +]%, RE: [+ workers_nsdap_display +]%, Others: [+ workers_other_display +]% [? if sapd_formed: SAPD: [+ workers_sapd_display +]% ?]
+
+New Middle Class: PSOE: [+ new_middle_PSOE_display +]%, AR: [+ new_middle_z_display +]%, PCE: [+ new_middle_PCE_display +]%, [? if not PRRS_name: PRRS?][? if PRRS_name != 0 : [+ PRRS_name +]?]: [+ new_middle_PRRS_display +]%, PRR: [+ new_middle_dvp_display +]%; CEDA: [+ new_middle_dnvp_display +]%, RE: [+ new_middle_nsdap_display +]%, Others: [+ new_middle_other_display +]% [? if sapd_formed: SAPD: [+ new_middle_sapd_display +]% ?]
+
+Old Middle Class: PSOE: [+ old_middle_PSOE_display +]%, AR: [+ old_middle_z_display +]%, PCE: [+ old_middle_PCE_display +]%, [? if not PRRS_name: PRRS?][? if PRRS_name != 0 : [+ PRRS_name +]?]: [+ old_middle_PRRS_display +]%, PRR: [+ old_middle_dvp_display +]%; CEDA: [+ old_middle_dnvp_display +]%, RE: [+ old_middle_nsdap_display +]%, Others: [+ old_middle_other_display +]% [? if sapd_formed: SAPD: [+ old_middle_sapd_display +]% ?]
+
+Rural: PSOE: [+ rural_PSOE_display +]%, AR: [+ rural_z_display +]%, PCE: [+ rural_PCE_display +]%, [? if not PRRS_name: PRRS?][? if PRRS_name != 0 : [+ PRRS_name +]?]: [+ rural_PRRS_display +]%, PRR: [+ rural_dvp_display +]%; CEDA: [+ rural_dnvp_display +]%, RE: [+ rural_nsdap_display +]%, Others: [+ rural_other_display +]% [? if sapd_formed: SAPD: [+ rural_sapd_display +]% ?]
+
+Unemployed: PSOE: [+ unemployed_PSOE_display +]%, AR: [+ unemployed_z_display +]%, PCE: [+ unemployed_PCE_display +]%, [? if not PRRS_name: PRRS?][? if PRRS_name != 0 : [+ PRRS_name +]?]: [+ unemployed_PRRS_display +]%, PRR: [+ unemployed_dvp_display +]%; CEDA: [+ unemployed_dnvp_display +]%, RE: [+ unemployed_nsdap_display +]%, Others: [+ unemployed_other_display +]% [? if sapd_formed: SAPD: [+ unemployed_sapd_display +]% ?]
+
+Catholics: PSOE: [+ catholics_PSOE_display +]%, AR: [+ catholics_z_display +]%, PCE: [+ catholics_PCE_display +]%, [? if not PRRS_name: PRRS?][? if PRRS_name != 0 : [+ PRRS_name +]?]: [+ catholics_PRRS_display +]%, PRR: [+ catholics_dvp_display +]%; CEDA: [+ catholics_dnvp_display +]%, RE: [+ catholics_nsdap_display +]%, Others: [+ catholics_other_display +]% [? if sapd_formed: SAPD: [+ catholics_sapd_display +]% ?]
+
+Support for the Republic: [+ pro_republic_disp +]%
