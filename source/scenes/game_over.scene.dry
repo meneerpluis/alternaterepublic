@@ -485,7 +485,7 @@ go-to: eg_menu if started == 1; root.start_menu_2 if started == 0
 
 [? if achievement_hirschfeld: **Hirschfeld** - pass reforms for homosexual rights. ?]
 
-[? if achievement_women_socialist militants: **Mädchen in Uniform** - a woman's place is in the socialist militants. ?]
+[? if achievement_women_socialist_militants: **Mädchen in Uniform** - a woman's place is in the socialist militants. ?]
 
 [? if achievement_bruder_zur_sonne: **Brüder, zur Sonne, zur Freiheit** - reduce unemployment, pause reparations, increase women's rights, elect an PSOE president, and deport Hitler in one playthrough on at least normal difficulty. ?]
 
@@ -590,7 +590,7 @@ go-to: eg_menu if started == 1; root.start_menu_2 if started == 0
 
 [? if not achievement_hirschfeld: **Hirschfeld** - pass reforms for homosexual rights. ?]
 
-[? if not achievement_women_socialist militants: **Mädchen in Uniform** - a woman's place is in the socialist militants. ?]
+[? if not achievement_women_socialist_militants: **Mädchen in Uniform** - a woman's place is in the socialist militants. ?]
 
 [? if not achievement_bruder_zur_sonne: **Brüder, zur Sonne, zur Freiheit** - reduce unemployment, pause reparations, increase women's rights, elect an PSOE president, and deport Hitler in one playthrough on at least normal difficulty. ?]
 
